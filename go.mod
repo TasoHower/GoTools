@@ -1,13 +1,15 @@
-module gotools
+module tools
 
-go 1.18
-
-require github.com/ethereum/go-ethereum v1.13.4
+go 1.22.3
 
 require (
-	github.com/btcsuite/btcd/btcec/v2 v2.2.0 // indirect
-	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
-	github.com/holiman/uint256 v1.2.3 // indirect
-	golang.org/x/crypto v0.14.0 // indirect
-	golang.org/x/sys v0.13.0 // indirect
+	github.com/CoboGlobal/cobo-waas2-go-sdk v1.4.0
+	github.com/gorilla/websocket v1.5.3
+	github.com/rabbitmq/amqp091-go v1.10.0
+)
+
+require (
+	github.com/google/uuid v1.6.0 // indirect
+	github.com/shopspring/decimal v1.4.0 // indirect
+	golang.org/x/oauth2 v0.21.0 // indirect
 )
