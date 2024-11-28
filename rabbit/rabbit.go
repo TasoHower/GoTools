@@ -58,6 +58,6 @@ func Send2MQ(body []byte) {
 			ContentType: "text/plain",
 			Body:        body,
 		})
-		
+
 	failOnError(err, "Failed to publish a message")
 }
