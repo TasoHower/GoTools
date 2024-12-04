@@ -1,0 +1,5 @@
+package kms
+
+func InitKMS() {
+
+}

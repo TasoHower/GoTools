@@ -56,17 +56,22 @@ func generateThresholdSignature(privateKeys []*big.Int, message string) []byte {
 		log.Fatalf("not enough private keys to sign")
 	}
 
-	// 合成最终的私钥：这里是简单地将多个私钥部分相加
-	finalPrivateKey := new(big.Int)
+	// 合成最终的私钥：这里是单地将多个私钥部分相加
+	var finalPrivateKey [][]byte
 	for _, key := range privateKeys {
-		finalPrivateKey.Add(finalPrivateKey, key)
+		finalPrivateKey = append(finalPrivateKey, key.Bytes())
+	}
+
+	finalKey, err := shamir.Combine(finalPrivateKey)
+	if err != nil {
+		log.Fatalf("failed to get final key:%v", err)
 	}
 
 	// 生成消息的哈希
 	hash := crypto.Keccak256Hash([]byte(message))
 
 	// 使用合成的私钥进行签名
-	signature, err := secp256k1.Sign(hash.Bytes(), finalPrivateKey.Bytes())
+	signature, err := secp256k1.Sign(hash.Bytes(), finalKey)
 	if err != nil {
 		log.Fatalf("failed to sign message: %v", err)
 	}
