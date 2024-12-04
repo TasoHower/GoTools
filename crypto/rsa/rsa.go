@@ -14,14 +14,14 @@ import (
 	"sync"
 )
 
-type RSA struct {
+type RSAKey struct {
 	priv *rsa.PrivateKey
 	pub  *rsa.PublicKey
 }
 
 const defaultRSAKeySize = 4096
 
-func GenRSAKey() (*RSA, error) {
+func GenRSAKey() (*RSAKey, error) {
 	// 生成私钥
 	privateKey, err := rsa.GenerateKey(rand.Reader, defaultRSAKeySize)
 	if err != nil {
@@ -31,13 +31,13 @@ func GenRSAKey() (*RSA, error) {
 	// 通过私钥获取公钥
 	publicKey := &privateKey.PublicKey
 
-	return &RSA{
+	return &RSAKey{
 		priv: privateKey,
 		pub:  publicKey,
 	}, nil
 }
 
-func (c *RSA) SaveKey(Path string) {
+func (c *RSAKey) SaveKey(Path string) {
 	wg := sync.WaitGroup{}
 
 	wg.Add(2)
@@ -90,7 +90,7 @@ func (c *RSA) SaveKey(Path string) {
 	wg.Wait()
 }
 
-func (c *RSA) Encrypt(msg string) []byte {
+func (c *RSAKey) Encrypt(msg string) []byte {
 	text, err := rsa.EncryptOAEP(
 		sha256.New(),
 		rand.Reader,
@@ -105,7 +105,7 @@ func (c *RSA) Encrypt(msg string) []byte {
 	return text
 }
 
-func (c *RSA) Decrypt(cipher []byte) string {
+func (c *RSAKey) Decrypt(cipher []byte) string {
 	plaintext, err := rsa.DecryptOAEP(
 		sha256.New(),
 		rand.Reader,
@@ -122,7 +122,7 @@ func (c *RSA) Decrypt(cipher []byte) string {
 	return string(plaintext)
 }
 
-func (c *RSA) Sign(msg string) (string, error) {
+func (c *RSAKey) Sign(msg string) (string, error) {
 	hash := sha512.Sum512([]byte(msg))
 
 	signature, err := rsa.SignPSS(
