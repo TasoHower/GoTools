@@ -34,7 +34,7 @@ func (c *AESKey) StringKey() string {
 	return string(c.private)
 }
 
-func (c *AESKey) Encrypt(msg string) ([]byte, error) {
+func (c *AESKey) Encrypt(msg []byte) ([]byte, error) {
 	block, _ := aes.NewCipher(c.private)
 
 	plaintextBytes := []byte(msg)
@@ -52,11 +52,11 @@ func (c *AESKey) Encrypt(msg string) ([]byte, error) {
 	return cipherText, nil
 }
 
-func (c *AESKey) Decrypt(cipherText []byte) (string, error) {
+func (c *AESKey) Decrypt(cipherText []byte) ([]byte, error) {
 	block, _ := aes.NewCipher(c.private)
 
 	if len(cipherText) < aes.BlockSize {
-		return "", fmt.Errorf("cipher text too short")
+		return nil, fmt.Errorf("cipher text too short")
 	}
 
 	iv := cipherText[:aes.BlockSize]
@@ -66,7 +66,7 @@ func (c *AESKey) Decrypt(cipherText []byte) (string, error) {
 	mode.CryptBlocks(cipherText, cipherText)
 
 	plaintext := pkcs5UnPadding(cipherText)
-	return string(plaintext), nil
+	return plaintext, nil
 }
 
 func pkcs5Padding(data []byte, blockSize int) []byte {

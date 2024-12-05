@@ -12,7 +12,7 @@ func TestAES(t *testing.T) {
 
 	t.Logf("原始字符串：%s", sourceMsg)
 
-	cipher, err := keys.Encrypt(sourceMsg)
+	cipher, err := keys.Encrypt([]byte(sourceMsg))
 	t.Log(err)
 	t.Logf("秘文:%s", base64.RawStdEncoding.EncodeToString(cipher))
 

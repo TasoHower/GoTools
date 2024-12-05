@@ -17,7 +17,7 @@ func TestCrypto(t *testing.T) {
 	aesK, _ := aes.GenAESkey([]byte("12ui34y8123ty891248946192637461234612348011023848102349123"))
 	t.Logf("AES Key:%s", aesK.StringKey())
 
-	msgC, _ := aesK.Encrypt(sourceMsg)
+	msgC, _ := aesK.Encrypt([]byte(sourceMsg))
 	t.Logf("AES 加密后的密文：%s", base64.RawStdEncoding.EncodeToString(msgC))
 
 	aesKC := keys.Encrypt(aesK.StringKey())
